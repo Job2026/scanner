@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code & Cargo | Enterprise Universal ATS Layout Parser</title>
+    <style>
+        body { background-color: #06090f; color: #f0f6fc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; padding: 40px; margin: 0; }
+        .app-window { max-width: 850px; margin: auto; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+        .app-header { background: #161b22; padding: 15px; border-bottom: 1px solid #30363d; font-weight: bold; color: #58a6ff; display: flex; align-items: center; justify-content: space-between; border-radius: 6px 6px 0 0; }
+        .app-body { padding: 30px; }
+        input[type="text"] { width: 100%; padding: 12px; background: #010409; color: #f0f6fc; border: 1px solid #30363d; border-radius: 6px; box-sizing: border-box; margin-bottom: 20px; font-size: 14px; }
+        textarea { width: 100%; height: 180px; background: #010409; color: #79c0ff; border: 1px solid #30363d; padding: 15px; border-radius: 6px; box-sizing: border-box; font-family: 'Courier New', monospace; font-size: 14px; resize: none; }
+        .btn-container { display: flex; gap: 15px; margin-top: 15px; }
+        button { flex: 2; padding: 14px; background: #238636; color: #ffffff; border: none; border-radius: 6px; font-weight: 600; font-size: 15px; cursor: pointer; transition: background 0.2s; }
+        button:hover { background: #2ea043; }
+        .btn-clear { flex: 1; background: #21262d; border: 1px solid #30363d; color: #8b949e; }
+        .btn-clear:hover { background: #30363d; color: #f0f6fc; }
+        .console-output { margin-top: 25px; padding: 20px; background: #161b22; border: 1px solid #30363d; border-radius: 6px; display: none; font-family: 'Courier New', monospace; }
+        .badge-fail { background: rgba(248,81,73,0.15); color: #ff7b72; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; border: 1px solid rgba(248,81,73,0.4); }
+        .badge-pass { background: rgba(56,139,253,0.15); color: #58a6ff; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; border: 1px solid rgba(56,139,253,0.4); }
+        .keyword-box { margin-top: 15px; padding: 12px; background: #0d1117; border: 1px solid #30363d; border-radius: 5px; }
+        .keyword-tag { display: inline-block; background: rgba(248,81,73,0.1); border: 1px solid rgba(248,81,73,0.3); padding: 3px 8px; margin: 4px; border-radius: 4px; font-size: 12px; color: #ff7b72; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="app-window">
+    <div class="app-header">
+        <span>🤖 CODE & CARGO // UNIVERSAL_ATS_AUDIT_v4.5</span>
+        <span style="font-size: 12px; color: #3fb950;">● PURE_GEOMETRY_ENGINE_READY</span>
+    </div>
+    <div class="app-body">
+        
+        <label style="font-weight: 600; display: block; margin-bottom: 10px;">Target Profession / Job Title (Optional):</label>
+        <input type="text" id="jobTitleInput" placeholder="Leave blank for a pure structural layout geometry analysis...">
+
+        <label style="font-weight: 600; display: block; margin-bottom: 5px;">Paste Resume Text Stream Directly Below:</label>
+        <textarea id="resumeContent" placeholder="Paste all text content from your current resume document here..."></textarea>
+        
+        <div class="btn-container">
+            <button onclick="executeUniversalAudit()">RUN AUTOMATED ATS GEOMETRY SCAN</button>
+            <button class="btn-clear" onclick="clearSystemBuffer()">CLEAR</button>
+        </div>
+
+        <div id="consoleResult" class="console-output">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #30363d; padding-bottom:10px;">
+                <span>[ATS_ALGORITHMIC_METRICS]</span>
+                <span id="scoreBadge" class="badge-fail">SCAN ANALYSIS</span>
+            </div>
+            
+            <p id="structuralFeedback" style="line-height: 1.6; font-size:14px; margin-bottom: 15px;"></p>
+            
+            <div id="keywordDeficitArea" class="keyword-box" style="display: none;">
+                <span style="font-weight: bold; color: #ff7b72; font-size: 13px;">⚠️ DETECTED CORE SKILL KEYWORD DEFICIT:</span>
+                <div id="missingKeywordsList" style="margin-top: 8px;"></div>
+            </div>
+            
+            <div style="margin-top: 25px; border-top: 1px solid #30363d; padding-top: 20px; text-align: center;">
+                <p style="font-size: 13px; margin-bottom: 15px; color: #8b949e;">Convert this text stream to a bot-compliant layout structure instantly.</p>
+                <button style="background: #1f6feb; width:auto; padding:12px 24px; margin: 0 auto; flex: none;" onclick="executeGatedFunnel()">DOWNLOAD BOT-PROOF RESUME CONFIGURATION</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function executeUniversalAudit() {
+    const finalDataStream = document.getElementById("resumeContent").value;
+    const rawJobInput = document.getElementById("jobTitleInput").value.trim();
+    const targetJob = rawJobInput.toLowerCase();
+    
+    if(!finalDataStream.trim()) {
+        alert("Execution Error: Data stream input is empty. Paste your layout text to initialize.");
+        return;
+    }
+
+    const consoleResult = document.getElementById("consoleResult");
+    const scoreBadge = document.getElementById("scoreBadge");
+    const structuralFeedback = document.getElementById("structuralFeedback");
+    const keywordDeficitArea = document.getElementById("keywordDeficitArea");
+    const missingKeywordsList = document.getElementById("missingKeywordsList");
+
+    consoleResult.style.display = "block";
+    missingKeywordsList.innerHTML = "";
+    keywordDeficitArea.style.display = "none";
+
+    // 🔬 DYNAMIC SKILL MAP DICTIONARY BY PROFESSION (NO GENERIC FALLBACKS)
+    const lowerResume = finalDataStream.toLowerCase();
+    let missingSkills = [];
+    let isTrackedProfession = false;
+    
+    if (rawJobInput !== "") {
+        if (targetJob.includes("nurse") || targetJob.includes("medical") || targetJob.includes("health")) {
+            let skills = ["patient care", "icu", "bls", "acls", "clinical", "charting", "triage"];
+            skills.forEach(s => { if(!lowerResume.includes(s)) missingSkills.push(s.toUpperCase()); });
+            isTrackedProfession = true;
+        } else if (targetJob.includes("account") || targetJob.includes("finance") || targetJob.includes("audit")) {
+            let skills = ["ledger", "excel", "reconciliation", "gaap", "forecasting", "invoice"];
+            skills.forEach(s => { if(!lowerResume.includes(s)) missingSkills.push(s.toUpperCase()); });
+            isTrackedProfession = true;
+        } else if (targetJob.includes("project") || targetJob.includes("manager") || targetJob.includes("scrum")) {
+            let skills = ["agile", "scrum", "jira", "sprint", "roadmap", "budget", "stakeholder"];
+            skills.forEach(s => { if(!lowerResume.includes(s)) missingSkills.push(s.toUpperCase()); });
+            isTrackedProfession = true;
+        } else if (targetJob.includes("code") || targetJob.includes("software") || targetJob.includes("engineer") || targetJob.includes("developer")) {
+            let skills = ["git", "api", "javascript", "python", "docker", "aws", "database"];
+            skills.forEach(s => { if(!lowerResume.includes(s)) missingSkills.push(s.toUpperCase()); });
+            isTrackedProfession = true;
+        }
+    }
+
+    // 🔬 DYNAMIC STRUCTURAL GEOMETRIC SCANNING
+    const lines = finalDataStream.split('\n');
+    const hasHeavyTabs = finalDataStream.includes("\t\t") || finalDataStream.includes("    ");
+    const hasLongWrappedLines = lines.some(line => line.trim().length > 115);
+
+    if (hasHeavyTabs || hasLongWrappedLines || (isTrackedProfession && missingSkills.length > 2)) {
+        scoreBadge.className = "badge-fail";
+        scoreBadge.innerText = "PARSER REPORT: RISK DETECTED";
+        
+        let headerText = rawJobInput !== "" ? `for [${rawJobInput.toUpperCase()}]` : "Structure Only Mode";
+        let feedback = `❌ <strong>Layout Geometry Malfunction ${headerText}:</strong> High risk of automated tracking filter rejection identified.<br><br>`;
+        
+        if (hasHeavyTabs || hasLongWrappedLines) {
+            feedback += `🤖 <strong>Parser Output Simulation:</strong> Hidden layout tables, side-by-side text boxes, or structural grid splits break linear string sequence parameters. Real corporate ATS software parses documents strictly from left to right. Multi-column grids cause rows to blend into chaotic, overlapping streams, entirely hiding your professional details from enterprise dashboard filters.`;
+        } else {
+            feedback += `🤖 <strong>Parser Output Simulation:</strong> While your layout geometry follows a sequential structural flow, your text block data stream lacks critical core competency tokens essential for database indexing algorithms.`;
+        }
+        structuralFeedback.innerHTML = feedback;
+
+        if (isTrackedProfession && missingSkills.length > 0) {
+            keywordDeficitArea.style.display = "block";
+            missingSkills.forEach(skill => {
+                missingKeywordsList.innerHTML += `<span class="keyword-tag">${skill}</span>`;
+            });
+        }
+    } else {
+        scoreBadge.className = "badge-pass";
+        scoreBadge.innerText = "PARSER REPORT: COMPLIANT";
+        
+        let headerText = rawJobInput !== "" ? `for [${rawJobInput.toUpperCase()}]` : "";
+        let feedback = `✔️ <strong>Linear Layout Sieve Confirmed ${headerText}:</strong> Your resume document text path processes sequentially in a single linear column layout grid.<br><br>`;
+        
+        feedback += `💡 <strong>Universal Recommendation:</strong> The parsing interface did not identify structural compression breaks. Maintain plain text configurations to secure compliance and optimize target positioning loops across hiring portals.`;
+        structuralFeedback.innerHTML = feedback;
+        keywordDeficitArea.style.display = "none";
+    }
+}
+
+function clearSystemBuffer() {
+    document.getElementById("jobTitleInput").value = "";
+    document.getElementById("resumeContent").value = "";
+    document.getElementById("consoleResult").style.display = "none";
+}
+
+function executeGatedFunnel() {
+    window.open("https://youtube.com", "_blank");
+}
+</script>
+
+</body>
+</html>

@@ -70,24 +70,34 @@
 
 <script>
 function executeUniversalAudit() {
-    const finalDataStream = document.getElementById("resumeContent").value;
-    const rawJobInput = document.getElementById("jobTitleInput").value.trim();
-    const targetJob = rawJobInput.toLowerCase();
+    const resumeText = document.getElementById("resumeContent").value.toLowerCase();
+    const resultConsole = document.getElementById("consoleResult");
+    const feedbackBox = document.getElementById("structuralFeedback");
     
-    if(!finalDataStream.trim()) {
-        alert("Execution Error: Data stream input is empty. Paste your layout text to initialize.");
-        return;
+    if(!resumeText.trim()) { alert("Input stream empty. Paste your resume text."); return; }
+    
+    // Show the results console window box
+    resultConsole.style.display = "block";
+
+    // CORE ENGINE CONDITIONAL CHECK: Search for multi-column triggers
+    const containsTableTriggers = resumeText.includes("\t") || resumeText.includes(" ") || resumeText.includes("columns") || resumeText.includes("|");
+
+    if (containsTableTriggers) {
+        // LEVEL 1 OUTCOME: Real formatting flags found!
+        feedbackBox.innerHTML = `
+            <span style="color: #ff7b72; font-weight: bold;">❌ Layout Geometry Malfunction Detected:</span><br><br>
+            Our parser simulation identified irregular horizontal tab gaps or spacing fragments in your text stream. 
+            Standard corporate ATS trackers read text strictly left-to-right. Multi-column template grids or hidden text boxes cause overlapping text strings, hiding your technical skills completely from recruiter search filters.
+        `;
+    } else {
+        // LEVEL 2 OUTCOME: The resume text formatting is genuinely perfect!
+        feedbackBox.innerHTML = `
+            <span style="color: #3fb950; font-weight: bold;">✅ Core Layout Geometry: 100% Compliant:</span><br><br>
+            Your document stream parses cleanly in a single-column, linear sequence! The robot screening bots can read your text perfectly without structural overlapping errors. <br><br>
+            <span style="color: #58a6ff;">⚠️ NEXT CRITICAL STEP: KEYWORD OPTIMIZATION</span><br>
+            While your layout structure is clean, you must verify your technical index balance. Run our Pro Optimizer Engine below to verify if your document contains the high-scoring keywords matching your career track grid!
+        `;
     }
-
-    const consoleResult = document.getElementById("consoleResult");
-    const scoreBadge = document.getElementById("scoreBadge");
-    const structuralFeedback = document.getElementById("structuralFeedback");
-    const keywordDeficitArea = document.getElementById("keywordDeficitArea");
-    const missingKeywordsList = document.getElementById("missingKeywordsList");
-
-    consoleResult.style.display = "block";
-    missingKeywordsList.innerHTML = "";
-    keywordDeficitArea.style.display = "none";
 
     // 🔬 DYNAMIC SKILL MAP DICTIONARY BY PROFESSION (NO GENERIC FALLBACKS)
     const lowerResume = finalDataStream.toLowerCase();

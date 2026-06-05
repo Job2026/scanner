@@ -33,6 +33,9 @@
 
         <textarea id="proInput" placeholder="Paste your flagged, un-optimized resume text here..."></textarea>
         <button class="btn-action" onclick="optimizeRigEngine()">EXECUTE ALGORITHMIC LAYOUT RE-STRUCTURE</button>
+        <button onclick="clearConsoleData()" style="background: #30363d; color: #8b949e; border: 1px solid #30363d; padding: 14px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px; margin-top: 10px; width: 100%;">
+            🧹 CLEAR CONSOLE DATA
+        </button>
 
         <div class="split-grid">
             <!-- LEFT PANEL: THE FIXED TEXT VIEWPORT -->
@@ -100,6 +103,11 @@ function unlockProEngine() {
         document.getElementById("proOutput").style.pointerEvents = "auto";
         document.getElementById("proOutput").style.userSelect = "text";
     }, 2000);
+}
+function clearConsoleData() {
+    document.getElementById("proInput").value = "";
+    document.getElementById("proOutput").value = "";
+    document.getElementById("injectionLogs").innerText = "[SYSTEM] Console wiped clean. Awaiting new document data...";
 }
 </script>
 

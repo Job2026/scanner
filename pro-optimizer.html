@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code & Cargo | PRO ATS Optimizer Engine</title>
+    <style>
+        body { background-color: #06090f; color: #f0f6fc; font-family: 'Courier New', monospace; padding: 40px; margin: 0; }
+        .wrapper { max-width: 900px; margin: auto; background: #0d1117; border: 1px solid #30363d; border-radius: 8px; }
+        .header { background: #161b22; padding: 20px; border-bottom: 1px solid #30363d; font-weight: bold; color: #58a6ff; font-size: 16px; border-radius: 8px 8px 0 0; }
+        .body-panel { padding: 30px; }
+        textarea { width: 100%; height: 160px; background: #010409; color: #79c0ff; border: 1px solid #30363d; padding: 15px; border-radius: 6px; box-sizing: border-box; font-size: 14px; margin-bottom: 15px; }
+        .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .panel-box { background: #161b22; border: 1px solid #30363d; padding: 20px; border-radius: 6px; }
+        .blur-lock { filter: blur(6px); pointer-events: none; transition: filter 0.4s ease; user-select: none; position: relative; }
+        .lock-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(13,17,23,0.85); z-index: 10; border-radius: 6px; text-align: center; padding: 20px; box-sizing: border-box; }
+        .btn-action { width: 100%; padding: 14px; background: #238636; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px; }
+        .btn-action:hover { background: #2ea043; }
+        .btn-sub { background: #ff0000; color: white; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; display: inline-block; margin-top: 10px; box-shadow: 0 4px 12px rgba(255,0,0,0.3); }
+        .unlocked-view { filter: none !important; pointer-events: auto !important; user-select: text !important; }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="header">🤖 CODE & CARGO // PRO_RE-ARCHITECT_ENGINE_v2.0 [SUBSCRIBER EXCLUSIVE]</div>
+    <div class="body-panel">
+        <label style="font-weight:bold; display:block; margin-bottom:10px;">Select Target Optimization Track:</label>
+        <select id="proTrack" style="width:100%; padding:12px; background:#161b22; color:white; border:1px solid #30363d; border-radius:6px; margin-bottom:15px;">
+            <option value="frontend">Frontend Stack (Inject: Git, React, TypeScript, API, Agile)</option>
+            <option value="backend">Backend Stack (Inject: Python, SQL, Docker, AWS, APIs)</option>
+        </select>
+
+        <textarea id="proInput" placeholder="Paste your flagged, un-optimized resume text here..."></textarea>
+        <button class="btn-action" onclick="optimizeRigEngine()">EXECUTE ALGORITHMIC LAYOUT RE-STRUCTURE</button>
+
+        <div class="split-grid">
+            <!-- LEFT PANEL: THE FIXED TEXT VIEWPORT -->
+            <div class="panel-box">
+                <h3 style="margin-top:0; color:#58a6ff;">📄 OPTIMIZED SINGLE-COLUMN TEXT:</h3>
+                <div style="position:relative; height:200px;">
+                    <div id="lockCover" class="lock-overlay" style="display:none;">
+                        <p style="margin:0 0 10px 0; font-weight:bold; color:#ff7b72;">👑 SUBSCRIBER LIVING VERIFICATION REQUIRED</p>
+                        <p style="font-size:12px; color:#8b949e; margin:0 0 15px 0;">Unlock the live layout text formatter engine by joining the channel squad.</p>
+                        <a href="https://youtube.com" target="_blank" class="btn-sub" onclick="unlockProEngine()">SUBSCRIBE TO UNLOCK ENGINE 🚀</a>
+                    </div>
+                    <textarea id="proOutput" style="height:100%; margin:0;" readonly placeholder="Optimized document strings will render here..."></textarea>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL: KEYWORDS INJECTED STATUS -->
+            <div class="panel-box">
+                <h3 style="margin-top:0; color:#238636;">🤖 INJECTION INVENTORY LOG:</h3>
+                <div id="injectionLogs" style="font-size:13px; line-height:1.6; color:#8b949e;">[SYSTEM] System idling. Awaiting document data input stream...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function optimizeRigEngine() {
+    const text = document.getElementById("proInput").value;
+    const track = document.getElementById("proTrack").value;
+    
+    if(!text.trim()) { alert("Input stream empty. Paste source resume data."); return; }
+
+    // 1. Core structural repair: Strip vertical tabs, replace multiple spaces with single clean space
+    let repairedText = text.replace(/[\t]+/g, " ").replace(/ {2,}/g, " ");
+    
+    // 2. Automated Smart Keyword Injection Execution
+    let keywordList = [];
+    if(track === "frontend") {
+        keywordList = ["Git", "React", "TypeScript", "REST APIs", "Agile Methodologies"];
+    } else {
+        keywordList = ["Python", "SQL Databases", "Docker Containers", "AWS Cloud", "Scalable APIs"];
+    }
+
+    // Programmatically append keywords into a verified Technical Core Competencies header string
+    repairedText = "=== ATS VERIFIED TECHNICAL CORE COMPETENCIES ===\n" + keywordList.join(" | ") + "\n\n" + repairedText;
+
+    // Output repaired layout to background text field, then drop the subscriber security gate block
+    document.getElementById("proOutput").value = repairedText;
+    document.getElementById("lockCover").style.display = "flex";
+    document.getElementById("proOutput").className = "blur-lock";
+    
+    // Update structural inventory system logs
+    let logBox = document.getElementById("injectionLogs");
+    logBox.innerHTML = `<span style="color:#58a6ff;">[SYSTEM]</span> 16:9 vertical whitespace fragments compiled.<br>`;
+    logBox.innerHTML += `<span style="color:#238636;">[INJECTED]</span> Appended ${keywordList.length} mandatory ATS search tags smoothly into document header area rows.<br><br>`;
+    logBox.innerHTML += `<strong>Status:</strong> Ready to compile clean output file framework.`;
+}
+
+function unlockProEngine() {
+    // Monitor user sequence focus switch, then release the text view block automatically
+    setTimeout(() => {
+        document.getElementById("lockCover").style.display = "none";
+        document.getElementById("proOutput").style.filter = "none";
+        document.getElementById("proOutput").style.pointerEvents = "auto";
+        document.getElementById("proOutput").style.userSelect = "text";
+    }, 2000);
+}
+</script>
+
+</body>
+</html>

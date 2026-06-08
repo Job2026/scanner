@@ -3,165 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code & Cargo | Enterprise Universal ATS Layout Parser</title>
+    <title>Code & Cargo | Enterprise Universal ATS Parser</title>
     <style>
-        body { background-color: #06090f; color: #f0f6fc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; padding: 40px; margin: 0; }
-        .app-window { max-width: 850px; margin: auto; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
-        .app-header { background: #161b22; padding: 15px; border-bottom: 1px solid #30363d; font-weight: bold; color: #58a6ff; display: flex; align-items: center; justify-content: space-between; border-radius: 6px 6px 0 0; }
-        .app-body { padding: 30px; }
-        input[type="text"] { width: 100%; padding: 12px; background: #010409; color: #f0f6fc; border: 1px solid #30363d; border-radius: 6px; box-sizing: border-box; margin-bottom: 20px; font-size: 14px; }
-        textarea { width: 100%; height: 180px; background: #010409; color: #79c0ff; border: 1px solid #30363d; padding: 15px; border-radius: 6px; box-sizing: border-box; font-family: 'Courier New', monospace; font-size: 14px; resize: none; }
-        .btn-container { display: flex; gap: 15px; margin-top: 15px; }
-        button { flex: 2; padding: 14px; background: #238636; color: #ffffff; border: none; border-radius: 6px; font-weight: 600; font-size: 15px; cursor: pointer; transition: background 0.2s; }
-        button:hover { background: #2ea043; }
-        .btn-clear { flex: 1; background: #21262d; border: 1px solid #30363d; color: #8b949e; }
-        .btn-clear:hover { background: #30363d; color: #f0f6fc; }
-        .console-output { margin-top: 25px; padding: 20px; background: #161b22; border: 1px solid #30363d; border-radius: 6px; display: none; font-family: 'Courier New', monospace; }
-        .badge-fail { background: rgba(248,81,73,0.15); color: #ff7b72; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; border: 1px solid rgba(248,81,73,0.4); }
-        .badge-pass { background: rgba(56,139,253,0.15); color: #58a6ff; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; border: 1px solid rgba(56,139,253,0.4); }
-        .keyword-box { margin-top: 15px; padding: 12px; background: #0d1117; border: 1px solid #30363d; border-radius: 5px; }
-        .keyword-tag { display: inline-block; background: rgba(248,81,73,0.1); border: 1px solid rgba(248,81,73,0.3); padding: 3px 8px; margin: 4px; border-radius: 4px; font-size: 12px; color: #ff7b72; font-weight: bold; }
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .app-window {
+            width: 100%;
+            max-width: 600px;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+            box-sizing: border-box;
+        }
+
+        .app-header {
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 12px;
+            margin-bottom: 18px;
+        }
+
+        .title-text-main { font-weight: bold; color: #58a6ff; font-size: 14px; margin-bottom: 4px; }
+        .title-text-sub { font-size: 11px; color: #39ff14; font-family: monospace; }
+
+        .input-label { display: block; font-size: 12px; color: #8b949e; font-weight: bold; margin-bottom: 6px; margin-top: 14px;}
+        
+        input[type="text"], textarea {
+            width: 100%;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #fff;
+            padding: 12px;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+
+        textarea { height: 130px; font-family: monospace; resize: none; }
+
+        .btn-container { display: flex; gap: 10px; margin-top: 15px; margin-bottom: 18px; }
+        .btn { flex: 1; padding: 12px; border-radius: 6px; font-weight: bold; font-size: 13px; cursor: pointer; border: none; }
+        .btn-scan { background: #238636; color: #fff; }
+        .btn-clear { background: #21262d; color: #c9d1d9; border: 1px solid #30363d; }
+
+        /* FIXED INTERFACE BOX - NO SLIPPING BOUNDARIES */
+        .console-output {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 16px;
+            display: none;
+            box-sizing: border-box;
+        }
+
+        .console-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .console-tag { font-family: monospace; font-size: 11px; color: #8b949e; }
+        
+        .badge {
+            font-family: monospace;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .badge-fail { background: rgba(255,51,51,0.15); color: #ff3333; border: 1px solid #ff3333; }
+        .badge-pass { background: rgba(57,255,20,0.15); color: #39ff14; border: 1px solid #39ff14; }
+
+        .feedback-box { font-family: monospace; font-size: 12px; line-height: 1.5; white-space: pre-wrap; }
+
+        .pro-trigger-box { display: none; margin-top: 15px; text-align: center; }
+        .btn-pro { background: #0056b3; color: white; border-radius: 6px; padding: 14px; width: 100%; font-weight: bold; cursor: pointer; border: none; display: block; box-sizing: border-box; text-decoration: none; font-size: 13px; }
+        
+        .keyword-badge-container { margin-top: 12px; display: none; background: rgba(88,166,255,0.1); padding: 10px; border-radius: 6px; border: 1px solid #30363d;}
+        .keyword-tag { background: #21262d; border: 1px solid #30363d; color: #58a6ff; padding: 3px 6px; border-radius: 4px; font-size: 11px; margin-right: 5px; display: inline-block; margin-top: 4px; font-family: monospace;}
     </style>
 </head>
 <body>
 
 <div class="app-window">
     <div class="app-header">
-        <span style="display: block; margin-bottom: 5px;">🤖 CODE & CARGO //</span>
-        <span style="font-size: 13px; font-weight: bold; color: #58a6ff; display: block; line-height: 1.4;">UNIVERSAL ATS AUDIT v4.5</span>
-        <span style="font-size: 11px; color: #3fb950; display: block; margin-top: 5px;">● PURE GEOMETRY ENGINE READY</span>
+        <div class="title-text-main">CODE & CARGO // SYSTEM INTERFACE</div>
+        <div class="title-text-sub">>_ UNIVERSAL ATS GEOMETRY PARSER v2.0</div>
     </div>
-    <div class="app-body">
-        
-        <label style="font-weight: 600; display: block; margin-bottom: 10px;">Target Profession / Job Title (Optional):</label>
-        <input type="text" id="jobTitleInput" placeholder="Leave blank for a pure structural layout geometry analysis...">
 
-        <label style="font-weight: 600; display: block; margin-bottom: 5px;">Paste Resume Text Stream Directly Below:</label>
-        <textarea id="resumeContent" placeholder="Paste all text content from your current resume document here..."></textarea>
-        
-        <div class="btn-container">
-            <button onclick="executeUniversalAudit()">RUN AUTOMATED ATS GEOMETRY SCAN</button>
-            <button class="btn-clear" onclick="clearSystemBuffer()">CLEAR</button>
+    <label class="input-label">Target Profession / Job Title (Optional):</label>
+    <input type="text" id="jobTitleInput" placeholder="e.g., Software Engineer, Auditor">
+
+    <label class="input-label">Paste Resume Text Stream Directly Below:</label>
+    <textarea id="resumeContent" placeholder="Paste your plain text stream here to analyze structural geometry arrays..."></textarea>
+
+    <div class="btn-container">
+        <button class="btn btn-scan" onclick="executeUniversalAudit()">RUN AUTOMATED ATS GEOMETRY SCAN</button>
+        <button class="btn btn-clear" onclick="clearSystemBuffer()">CLEAR</button>
+    </div>
+
+    <!-- Fixed Console Terminal Box -->
+    <div class="console-output" id="consoleResult">
+        <div class="console-header">
+            <span class="console-tag">[ATS_ALGORITHMIC_METRICS]</span>
+            <span class="badge" id="statusBadge">PENDING</span>
         </div>
-
-        <div id="consoleResult" class="console-output">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #30363d; padding-bottom:10px;">
-                <span>[ATS_ALGORITHMIC_METRICS]</span>
-                <span id="scoreBadge" class="badge-fail">SCAN ANALYSIS</span>
-                <div style="background: #ff0000; color: white; font-size: 11px; font-weight: bold; padding: 6px 12px; border-radius: 4px; display: inline-block; margin-top: 10px; text-align: center; letter-spacing: 1px;">
-                    ⚠️ PARSER REPORT: RISK DETECTED
-                </div>
-            </div>
-            
-            <p id="structuralFeedback" style="line-height: 1.6; font-size:14px; margin-bottom: 15px;"></p>
-            <button style="background: #ff0000; color: white; margin-top: 20px; font-weight: bold; width: 100%; padding: 14px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; display: block; text-align: center;" onclick="navigateToProOptimizer()">
-                🚨 UPGRADE TO PRO: AUTOMATICALLY INJECT MISSING KEYWORDS
-            </button>
-
-            <div id="keywordDeficitArea" class="keyword-box" style="display: none;">
-                <span style="font-weight: bold; color: #ff7b72; font-size: 13px;">⚠️ DETECTED CORE SKILL KEYWORD DEFICIT:</span>
-                <div id="missingKeywordsList" style="margin-top: 8px;"></div>
-            </div>
-            
-            <div style="margin-top: 25px; border-top: 1px solid #30363d; padding-top: 20px; text-align: center;">
-                <p style="font-size: 13px; margin-bottom: 15px; color: #8b949e;">Convert this text stream to a bot-compliant layout structure instantly.</p>
-                <button style="background: #1f6feb; width:auto; padding:12px 24px; margin: 0 auto; flex: none;" onclick="executeGatedFunnel()">DOWNLOAD BOT-PROOF RESUME CONFIGURATION</button>
-            </div>
+        <div class="feedback-box" id="structuralFeedback"></div>
+        
+        <!-- Keyword System Section Integrated Properly -->
+        <div class="keyword-badge-container" id="keywordDeficitArea">
+            <div style="font-size: 11px; color: #ff3333; font-weight: bold; margin-bottom: 4px;">⚠️ DETECTED CORE SKILL KEYWORD DEFICIT:</div>
+            <div id="missingKeywordsList"></div>
         </div>
+    </div>
+
+    <div class="pro-trigger-box" id="proTrigger">
+        <button class="btn-pro" onclick="navigateToProOptimizer()">DOWNLOAD BOT-PROOF RESUME CONFIGURATION</button>
     </div>
 </div>
 
 <script>
 function executeUniversalAudit() {
-    const resumeText = document.getElementById("resumeContent").value.toLowerCase();
-    const resultConsole = document.getElementById("consoleResult");
-    const feedbackBox = document.getElementById("structuralFeedback");
+    const resumeText = document.getElementById("resumeContent").value.trim();
+    const jobTitle = document.getElementById("jobTitleInput").value.toLowerCase();
     
-    if(!resumeText.trim()) { alert("Input stream empty. Paste your resume text."); return; }
-    
-    // Show the results console window box
-    resultConsole.style.display = "block";
+    const consoleBox = document.getElementById("consoleResult");
+    const feedback = document.getElementById("structuralFeedback");
+    const badge = document.getElementById("statusBadge");
+    const proBox = document.getElementById("proTrigger");
+    const keywordArea = document.getElementById("keywordDeficitArea");
+    const keywordList = document.getElementById("missingKeywordsList");
 
-    // CORE ENGINE CONDITIONAL CHECK: Search for multi-column triggers
-    const containsTableTriggers = resumeText.includes("\t") || resumeText.includes(" ") || resumeText.includes("columns") || resumeText.includes("|");
-
-    if (containsTableTriggers) {
-        // LEVEL 1 OUTCOME: Real formatting flags found!
-        feedbackBox.innerHTML = `
-            <span style="color: #ff7b72; font-weight: bold;">❌ Layout Geometry Malfunction Detected:</span><br><br>
-            Our parser simulation identified irregular horizontal tab gaps or spacing fragments in your text stream. 
-            Standard corporate ATS trackers read text strictly left-to-right. Multi-column template grids or hidden text boxes cause overlapping text strings, hiding your technical skills completely from recruiter search filters.
-        `;
-    } else {
-        // LEVEL 2 OUTCOME: The resume text formatting is genuinely perfect!
-        feedbackBox.innerHTML = `
-            <span style="color: #3fb950; font-weight: bold;">✅ Core Layout Geometry: 100% Compliant:</span><br><br>
-            Your document stream parses cleanly in a single-column, linear sequence! The robot screening bots can read your text perfectly without structural overlapping errors. <br><br>
-            <span style="color: #58a6ff;">⚠️ NEXT CRITICAL STEP: KEYWORD OPTIMIZATION</span><br>
-            While your layout structure is clean, you must verify your technical index balance. Run our Pro Optimizer Engine below to verify if your document contains the high-scoring keywords matching your career track grid!
-        `;
+    if (!resumeText) {
+        alert("Input stream empty. Paste your resume text layout.");
+        return;
     }
 
-    // 🔬 DYNAMIC SKILL MAP DICTIONARY BY PROFESSION (NO GENERIC FALLBACKS)
-    const lowerResume = finalDataStream.toLowerCase();
+    consoleBox.style.display = "block";
+    proBox.style.display = "block";
+    keywordArea.style.display = "none";
+    keywordList.innerHTML = "";
+
+    // --- TRUE ALGORITHMIC SPACING CHECK ---
+    // Counts consecutive spacing fragments that indicate broken hidden table coordinates or multi-column grids
+    const columnFragments = (resumeText.match(/ {4,}/g) || []).length;
+    const hasTabs = resumeText.includes('\t');
+
+    if (columnFragments > 2 || hasTabs) {
+        // LEVEL 1: True Formatting Malfunction Detected
+        badge.className = "badge badge-fail";
+        badge.innerText = "MALFUNCTION";
+        feedback.innerHTML = `<span style="color: #ff3333; font-weight: bold;">✕ Layout Geometry Malfunction Detected:</span>\n\nOur structural metrics identified irregular horizontal spacing blocks inside your text stream. Side-by-side columns or design text frames turn into chaotic overlapping data strings during machine indexing, completely blinding recruiters to your qualifications.`;
+    } else {
+        // LEVEL 2: True Compliant Linear Structure Detected
+        badge.className = "badge badge-pass";
+        badge.innerText = "PASSED";
+        feedback.innerHTML = `<span style="color: #39ff14; font-weight: bold;">✓ Core Layout Geometry: 100% Compliant</span>\n\nYour structural document path flows in a clean sequential grid. Machine tracking spiders can map your skill arrays into index tables without coordinate drift. Proceed to verify target word density optimizations below.`;
+    }
+
+    // --- RETAINED DICTIONARY LOGIC FROM YOUR SYSTEM ---
     let missingSkills = [];
     let isTrackedProfession = false;
-    
-    if (rawJobInput !== "") {
-        if (targetJob.includes("nurse") || targetJob.includes("medical") || targetJob.includes("health")) {
-            let skills = ["patient care", "icu", "bls", "acls", "clinical", "charting", "triage"];
-            skills.forEach(s => { if(!lowerResume.includes(s)) missingSkills.push(s.toUpperCase()); });
+
+    if (jobTitle) {
+        const lowerResume = resumeText.toLowerCase();
+        
+        if (jobTitle.includes("nurse") || jobTitle.includes("medical") || jobTitle.includes("health")) {
             isTrackedProfession = true;
-        } else if (targetJob.includes("account") || targetJob.includes("finance") || targetJob.includes("audit")) {
-            let skills = ["ledger", "excel", "reconciliation", "gaap", "forecasting", "invoice"];
-            skills.forEach(s => { if(!lowerResume.includes(s)) missingSkills.push(s.toUpperCase()); });
+            const skills = ["bls", "acls", "clinical", "charting", "triage"];
+            skills.forEach(skill => { if (!lowerResume.includes(skill)) missingSkills.push(skill); });
+        }
+        else if (jobTitle.includes("account") || jobTitle.includes("finance") || jobTitle.includes("audit")) {
             isTrackedProfession = true;
-        } else if (targetJob.includes("project") || targetJob.includes("manager") || targetJob.includes("scrum")) {
-            let skills = ["agile", "scrum", "jira", "sprint", "roadmap", "budget", "stakeholder"];
-            skills.forEach(s => { if(!lowerResume.includes(s)) missingSkills.push(s.toUpperCase()); });
+            const skills = ["ledger", "excel", "reconciliation", "gaap", "forecasting", "invoice"];
+            skills.forEach(skill => { if (!lowerResume.includes(skill)) missingSkills.push(skill); });
+        }
+        else if (jobTitle.includes("project") || jobTitle.includes("manager") || jobTitle.includes("scrum")) {
             isTrackedProfession = true;
-        } else if (targetJob.includes("code") || targetJob.includes("software") || targetJob.includes("engineer") || targetJob.includes("developer")) {
-            let skills = ["git", "api", "javascript", "python", "docker", "aws", "database"];
-            skills.forEach(s => { if(!lowerResume.includes(s)) missingSkills.push(s.toUpperCase()); });
+            const skills = ["agile", "scrum", "jira", "sprint", "roadmap", "budget", "stakeholder"];
+            skills.forEach(skill => { if (!lowerResume.includes(skill)) missingSkills.push(skill); });
+        }
+        else if (jobTitle.includes("software") || jobTitle.includes("developer") || jobTitle.includes("engineer")) {
             isTrackedProfession = true;
+            const skills = ["git", "api", "javascript", "python", "docker", "aws", "database"];
+            skills.forEach(skill => { if (!lowerResume.includes(skill)) missingSkills.push(skill); });
         }
     }
 
-    // 🔬 DYNAMIC STRUCTURAL GEOMETRIC SCANNING
-    const lines = finalDataStream.split('\n');
-    const hasHeavyTabs = finalDataStream.includes("\t\t") || finalDataStream.includes("    ");
-    const hasLongWrappedLines = lines.some(line => line.trim().length > 115);
-
-    if (hasHeavyTabs || hasLongWrappedLines || (isTrackedProfession && missingSkills.length > 2)) {
-        scoreBadge.className = "badge-fail";
-        scoreBadge.innerText = "PARSER REPORT: RISK DETECTED";
-        
-        let headerText = rawJobInput !== "" ? `for [${rawJobInput.toUpperCase()}]` : "Structure Only Mode";
-        let feedback = `❌ <strong>Layout Geometry Malfunction ${headerText}:</strong> High risk of automated tracking filter rejection identified.<br><br>`;
-        
-        if (hasHeavyTabs || hasLongWrappedLines) {
-            feedback += `🤖 <strong>Parser Output Simulation:</strong> Hidden layout tables, side-by-side text boxes, or structural grid splits break linear string sequence parameters. Real corporate ATS software parses documents strictly from left to right. Multi-column grids cause rows to blend into chaotic, overlapping streams, entirely hiding your professional details from enterprise dashboard filters.`;
-        } else {
-            feedback += `🤖 <strong>Parser Output Simulation:</strong> While your layout geometry follows a sequential structural flow, your text block data stream lacks critical core competency tokens essential for database indexing algorithms.`;
-        }
-        structuralFeedback.innerHTML = feedback;
-
-        if (isTrackedProfession && missingSkills.length > 0) {
-            keywordDeficitArea.style.display = "block";
-            missingSkills.forEach(skill => {
-                missingKeywordsList.innerHTML += `<span class="keyword-tag">${skill}</span>`;
-            });
-        }
-    } else {
-        scoreBadge.className = "badge-pass";
-        scoreBadge.innerText = "PARSER REPORT: COMPLIANT";
-        
-        let headerText = rawJobInput !== "" ? `for [${rawJobInput.toUpperCase()}]` : "";
-        let feedback = `✔️ <strong>Linear Layout Sieve Confirmed ${headerText}:</strong> Your resume document text path processes sequentially in a single linear column layout grid.<br><br>`;
-        
-        feedback += `💡 <strong>Universal Recommendation:</strong> The parsing interface did not identify structural compression breaks. Maintain plain text configurations to secure compliance and optimize target positioning loops across hiring portals.`;
-        structuralFeedback.innerHTML = feedback;
-        keywordDeficitArea.style.display = "none";
+    // Display keywords if any match deficits are discovered
+    if (isTrackedProfession && missingSkills.length > 0) {
+        keywordArea.style.display = "block";
+        missingSkills.forEach(skill => {
+            keywordList.innerHTML += `<span class="keyword-tag">${skill.toUpperCase()}</span>`;
+        });
     }
 }
 
@@ -169,6 +215,8 @@ function clearSystemBuffer() {
     document.getElementById("jobTitleInput").value = "";
     document.getElementById("resumeContent").value = "";
     document.getElementById("consoleResult").style.display = "none";
+    document.getElementById("proTrigger").style.display = "none";
+
 }
 
 function executeGatedFunnel() {

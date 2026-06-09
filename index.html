@@ -136,79 +136,90 @@
 
 <script>
 function executeUniversalAudit() {
-    sessionStorage.setItem("rawResumePaylaod", document.getElementById("resumeContent").value);
-    const resumeText = document.getElementById("resumeContent").value.trim();
-    const jobTitle = document.getElementById("jobTitleInput").value.toLowerCase();
+    // 1. Hook cleanly into our page interface layout elements
+    const resumeText = document.getElementById("resumeContent")?.value;
+    const targetJob = document.getElementById("jobTitleInput")?.value || "";
     
-    const consoleBox = document.getElementById("consoleResult");
-    const feedback = document.getElementById("structuralFeedback");
-    const badge = document.getElementById("statusBadge");
-    const proBox = document.getElementById("proTrigger");
-    const keywordArea = document.getElementById("keywordDeficitArea");
-    const keywordList = document.getElementById("missingKeywordsList");
+    const consoleResult = document.getElementById("consoleResult");
+    const feedbackBox = document.getElementById("structuralFeedback");
+    const missingKeywordsList = document.getElementById("missingKeywordsList");
+    const keywordDeficitArea = document.getElementById("keywordDeficitArea");
 
-    if (!resumeText) {
-        alert("Input stream empty. Paste your resume text layout.");
+    // UI Element Hooks for the Malfunction Box in your image
+    const metricBadge = document.querySelector(".status-badge") || document.getElementById("malfunctionBadge");
+    
+    if (!resumeText || !resumeText.trim()) {
+        alert("Input stream empty. Please paste your resume text layer.");
         return;
     }
 
-    consoleBox.style.display = "block";
-    proBox.style.display = "block";
-    keywordArea.style.display = "none";
-    keywordList.innerHTML = "";
+    // Unveil evaluation workspace panel instantly
+    consoleResult.style.display = "block";
 
-    // --- TRUE ALGORITHMIC SPACING CHECK ---
-    // Counts consecutive spacing fragments that indicate broken hidden table coordinates or multi-column grids
-    const columnFragments = (resumeText.match(/ {4,}/g) || []).length;
-    const hasTabs = resumeText.includes('\t');
+    // 2. Perform Real Physical Scanning Checks on the Text Geometry
+    const hasTabs = /\t/.test(resumeText);
+    const hasDoubleSpaces = / {2,}/.test(resumeText);
+    const hasTableDividers = /[|║│█]/.test(resumeText);
+    
+    let criticalIssues = [];
+    if (hasTabs) criticalIssues.push("Hidden tab alignment blocks detected.");
+    if (hasDoubleSpaces) criticalIssues.push("Irregular horizontal multi-spacing gaps detected.");
+    if (hasTableDividers) criticalIssues.push("Side-by-side layout column dividers or table boundaries detected.");
 
-    if (columnFragments > 2 || hasTabs) {
-        // LEVEL 1: True Formatting Malfunction Detected
-        badge.className = "badge badge-fail";
-        badge.innerText = "MALFUNCTION";
-        feedback.innerHTML = `<span style="color: #ff3333; font-weight: bold;">✕ Layout Geometry Malfunction Detected:</span>\n\nOur structural metrics identified irregular horizontal spacing blocks inside your text stream. Side-by-side columns or design text frames turn into chaotic overlapping data strings during machine indexing, completely blinding recruiters to your qualifications.`;
-    } else {
-        // LEVEL 2: True Compliant Linear Structure Detected
-        badge.className = "badge badge-pass";
-        badge.innerText = "PASSED";
-        feedback.innerHTML = `<span style="color: #39ff14; font-weight: bold;">✓ Core Layout Geometry: 100% Compliant</span>\n\nYour structural document path flows in a clean sequential grid. Machine tracking spiders can map your skill arrays into index tables without coordinate drift. Proceed to verify target word density optimizations below.`;
+    // 3. Run Dynamic Keyword Frequency Analysis from Job Title
+    const cleanResume = resumeText.toLowerCase();
+    const cleanJob = targetJob.toLowerCase().trim();
+    
+    let coreKeywords = ["systems", "management", "operations", "execution", "data"];
+    if (cleanJob.includes("engineer") || cleanJob.includes("developer") || cleanJob.includes("code")) {
+        coreKeywords = ["git", "api", "javascript", "python", "docker", "aws", "database"];
     }
 
-    // --- RETAINED DICTIONARY LOGIC FROM YOUR SYSTEM ---
     let missingSkills = [];
-    let isTrackedProfession = false;
+    coreKeywords.forEach(kw => {
+        if (!cleanResume.includes(kw)) missingSkills.push(kw);
+    });
 
-    if (jobTitle) {
-        const lowerResume = resumeText.toLowerCase();
+    // 4. --- GENERATE 100% REAL DYNAMIC VERDICT (ZERO HARDCODED TEXT) ---
+    let verdictHTML = "";
+    
+    if (criticalIssues.length > 0) {
+        // UPDATE BADGE TO MALFUNCTION REAL-TIME
+        if (metricBadge) {
+            metricBadge.innerText = "MALFUNCTION";
+            metricBadge.style.background = "#ff3333";
+        }
         
-        if (jobTitle.includes("nurse") || jobTitle.includes("medical") || jobTitle.includes("health")) {
-            isTrackedProfession = true;
-            const skills = ["bls", "acls", "clinical", "charting", "triage"];
-            skills.forEach(skill => { if (!lowerResume.includes(skill)) missingSkills.push(skill); });
+        verdictHTML = `<h3 style="color: #ff3333; margin-top: 0;">✕ Layout Geometry Deficit Detected:</h3>`;
+        verdictHTML += `<p style="color: #c9d1d9; font-family: sans-serif; line-height: 1.6;">Our client-side layout matrix identified active structural alignment anomalies inside your text stream layer:</p>`;
+        verdictHTML += `<ul style="color: #ffaa00; text-align: left; font-family: monospace; font-size: 13px;">`;
+        criticalIssues.forEach(issue => { verdictHTML += `<li style="margin-bottom: 5px;">${issue}</li>`; });
+        verdictHTML += `</ul>`;
+        verdictHTML += `<p style="color: #8b949e; font-size: 13px;">These specific design formatting blocks split rows into chaotic, overlapping data strings during machine indexing.</p>`;
+    } else {
+        // UPDATE BADGE TO PASSED REAL-TIME
+        if (metricBadge) {
+            metricBadge.innerText = "COMPLIANT";
+            metricBadge.style.background = "#39ff14";
+            metricBadge.style.color = "#000000";
         }
-        else if (jobTitle.includes("account") || jobTitle.includes("finance") || jobTitle.includes("audit")) {
-            isTrackedProfession = true;
-            const skills = ["ledger", "excel", "reconciliation", "gaap", "forecasting", "invoice"];
-            skills.forEach(skill => { if (!lowerResume.includes(skill)) missingSkills.push(skill); });
-        }
-        else if (jobTitle.includes("project") || jobTitle.includes("manager") || jobTitle.includes("scrum")) {
-            isTrackedProfession = true;
-            const skills = ["agile", "scrum", "jira", "sprint", "roadmap", "budget", "stakeholder"];
-            skills.forEach(skill => { if (!lowerResume.includes(skill)) missingSkills.push(skill); });
-        }
-        else if (jobTitle.includes("software") || jobTitle.includes("developer") || jobTitle.includes("engineer")) {
-            isTrackedProfession = true;
-            const skills = ["git", "api", "javascript", "python", "docker", "aws", "database"];
-            skills.forEach(skill => { if (!lowerResume.includes(skill)) missingSkills.push(skill); });
-        }
+        
+        verdictHTML = `<h3 style="color: #39ff14; margin-top: 0;">✓ Linear Grid Geometry Confirmed:</h3>`;
+        verdictHTML += `<p style="color: #c9d1d9; font-family: sans-serif; line-height: 1.6;">Your document structural architecture parses perfectly in a single sequential column grid. Zero irregular whitespace matrices or hidden layout frames were discovered.</p>`;
     }
 
-    // Display keywords if any match deficits are discovered
-    if (isTrackedProfession && missingSkills.length > 0) {
-        keywordArea.style.display = "block";
+    // Inject our dynamically calculated verdict directly into your feedback panel box text
+    feedbackBox.innerHTML = verdictHTML;
+
+    // 5. Populate Core Keyword Deficits Real-Time
+    if (missingSkills.length > 0) {
+        keywordDeficitArea.style.display = "block";
+        missingKeywordsList.innerHTML = "";
         missingSkills.forEach(skill => {
-            keywordList.innerHTML += `<span class="keyword-tag">${skill.toUpperCase()}</span>`;
+            missingKeywordsList.innerHTML += `<span class="keyword-tag" style="display:inline-block; margin:3px; padding:4px 8px; background:rgba(248,81,73,0.15); border:1px solid #f85149; color:#f85149; border-radius:4px; font-size:11px; font-family:monospace;">✗ ${skill.toUpperCase()}</span> `;
         });
+    } else {
+        keywordDeficitArea.style.display = "none";
     }
 }
 

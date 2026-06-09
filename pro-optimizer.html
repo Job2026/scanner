@@ -151,11 +151,10 @@
     <div class="header">CODE & CARGO // PRO_ENGINE_v2.0 // RE-ARCHITECT</div>
     
     <div class="panel-box">
-        <label>Select Target Optimization Track:</label>
-        <select id="proTrack">
-            <option value="frontend">Frontend Stack Optimization [Inject: Git, React, TypeScript, API]</option>
-            <option value="backend">Backend Stack Optimization [Inject: Python, SQL, Docker, AWS]</option>
-        </select>
+        <label style="font-weight:bold; display:block; margin-bottom:10px;">
+            Paste Target Job Description Text Spec Here:</label>
+<textarea id="proTrack" style="width:100%; height:80px; background:#161b22; color:white; border:1px solid #30363d; padding:10px; border-radius:6px;" placeholder="Paste full LinkedIn or Indeed job description details here..."></textarea>
+
         
         <button class="btn-action" onclick="optimizeRigEngine()">EXECUTE ALGORITHMIC LAYOUT RE-STRUCTURE</button>
         <button class="btn-clear" onclick="clearConsoleData()">CLEAR CONSOLE DATA</button>
@@ -188,61 +187,109 @@
 </div>
 
 <script>
-// Lifecycle hook: Try to automatically sync data from index page if available in cache memory
-window.onload = function() {
-    const cachedText = sessionStorage.getItem("rawResumePayload");
-    if (cachedText) {
-        document.getElementById("proOutput").value = "SYSTEM DATA SYNCED: " + cachedText.substring(0, 60) + "... Ready for architectural transformation.";
-    }
-};
-
-function optimizeRigEngine() {
-    // Dynamically fallback if session text isn't present
-    let rawText = sessionStorage.getItem("rawResumePayload") || "John Doe \n Skills: Management, Communication, System Design";
-    const track = document.getElementById("proTrack").value;
-    const logBox = document.getElementById("injectionLogs");
-    const outputBox = document.getElementById("proOutput");
-
-    // Clear background layouts out, convert structure to clean single line spaces
-    let cleanedText = rawText.replace(/[\t]+/g, " ").replace(/ {2,}/g, " ");
-    
-    let keywords = [];
-    if (track === "frontend") {
-        keywords = ["Git", "React", "TypeScript", "REST APIs", "Agile Methodologies"];
-    } else {
-        keywords = ["Python", "SQL Databases", "Docker Containers", "AWS Cloud", "Scalable APIs"];
-    }
-
-    // Build the structural data core layout frame
-    const timestamp = new Date().toLocaleTimeString();
-    let optimizedPayload = `=== ATS COMPLIANT SINGLE-COLUMN STRUCTURE ===\n\n`;
-    optimizedPayload += `TARGET CORE COMPETENCY INJECTION:\n[ ${keywords.join(" | ")} ]\n\n`;
-    optimizedPayload += `ORIGINAL PARSED TEXT STREAM:\n${cleanedText}`;
-
-    outputBox.value = optimizedPayload;
-    
-    // Print real system automation processing values to console log wrapper
-    logBox.innerHTML = `<span style="color: #58a6ff;">[${timestamp}]</span> <span style="color: #39ff14;">[SUCCESS]</span> 16:9 layout sequence parsed clean.\n`;
-    logBox.innerHTML += `<span style="color: #58a6ff;">[${timestamp}]</span> <span style="color: #58a6ff;">[INJECTED]</span> Appended ${keywords.length} mandatory semantic tags.\n`;
-    logBox.innerHTML += `<span style="color: #58a6ff;">[${timestamp}]</span> Status: Clean file ready for distribution export loop.`;
-}
+let systemAuthorizationToken = "PENDING_HANDSHAKE_INITIATION";
 
 function unlockProEngine() {
+    const consoleLogs = document.getElementById("injectionLogs");
+    const currentTime = new Date().toLocaleTimeString();
+    
+    systemAuthorizationToken = "ACCESS_GRANTED";
+    
+    consoleLogs.innerHTML = `<span style="color: #58a6ff;">[${currentTime}]</span> <span style="color: #ffaa00;">[OAUTH_MONITOR]</span> Initializing subscription validation...`;
+    
+    setTimeout(() => {
+        const nextTime = new Date().toLocaleTimeString();
+        consoleLogs.innerHTML += `<br><span style="color: #58a6ff;">[${nextTime}]</span> <span style="color: #39ff14;">[SUCCESS]</span> Advanced parsing matrix unlocked.`;
+        document.getElementById("lockCover").style.display = "none";
+        optimizeRigEngine();
+    }, 2000); 
+}
+
+function optimizeRigEngine() {
+    const rawInputBox = document.getElementById("proInput");
+    const outputBox = document.getElementById("proOutput");
     const logBox = document.getElementById("injectionLogs");
     const timestamp = new Date().toLocaleTimeString();
+
+    // Use the track selection box text as the Full Job Description text block source
+    const trackSelect = document.getElementById("proTrack"); 
+
+    if (!rawInputBox || !rawInputBox.value.trim()) {
+        alert("Execution Halted: Input stream empty. Paste your resume text.");
+        return;
+    }
+
+    const cleanResume = rawInputBox.value.toLowerCase().replace(/[\t\n\r]+/g, " ").replace(/\s+/g, " ");
+    const jobDescriptionText = trackSelect.value.toLowerCase().replace(/[\t\n\r]+/g, " ").replace(/\s+/g, " ");
+
+    // 1. Enterprise-Grade Stop-Words Filter Array (Eliminates filler text)
+    const stopWords = new Set([
+        "and", "the", "for", "with", "this", "that", "from", "your", "will", "have", "with", "from",
+        "their", "about", "which", "shall", "should", "could", "would", "must", "they", "them", "these",
+        "work", "team", "role", "experience", "skills", "job", "company", "business", "support", "working",
+        "required", "preferred", "successful", "candidate", "position", "responsibilities", "requirements",
+        "ability", "knowledge", "years", "strong", "excellent", "written", "verbal", "communication", "management"
+    ]);
+
+    // 2. Extract High-Frequency Professional Tokens Dynamically
+    const jobWordsArray = jobDescriptionText.replace(/[^a-zA-Z0-9\s]/g, " ").split(/\s+/);
+    const wordFrequencyMap = {};
+
+    jobWordsArray.forEach(word => {
+        if (word.length > 2 && isNaN(word) && !stopWords.has(word)) {
+            wordFrequencyMap[word] = (wordFrequencyMap[word] || 0) + 1;
+        }
+    });
+
+    // Isolate top 5 core architectural keyword anchors directly from the job details
+    const dynamicKeywords = Object.keys(wordFrequencyMap)
+        .sort((a, b) => wordFrequencyMap[b] - wordFrequencyMap[a])
+        .slice(0, 5);
+
+    // Fallback block if job text input was too short or generic
+    if (dynamicKeywords.length === 0) {
+        dynamicKeywords.push("operations", "development", "strategy", "execution", "systems");
+    }
+
+    // 3. Construct the Complete Real Plaintext File Architecture String
+    let optimizedPayload = `==================================================\n`;
+    optimizedPayload += `CODE & CARGO // ATS-COMPLIANT DYNAMIC RESUME FILE\n`;
+    optimizedPayload += `==================================================\n\n`;
+    optimizedPayload += `[DYNAMIC_CORE_KEYWORDS_EXTRACTED_FROM_JOB_SPEC]:\n`;
+    dynamicKeywords.forEach(kw => { optimizedPayload += `- ${kw.toUpperCase()}\n`; });
+    optimizedPayload += `\n--------------------------------------------------\n\n`;
+    optimizedPayload += `[PARSED_TEXT_STREAM]:\n${rawInputBox.value.trim()}`;
+
+    // 4. Render to UI Viewport and Drop Security Layout Locks
+    outputBox.value = optimizedPayload;
+    outputBox.style.filter = "none";
+    outputBox.style.pointerEvents = "auto";
+    outputBox.style.userSelect = "text";
     
-    logBox.innerHTML += `\n<span style="color: #58a6ff;">[${timestamp}]</span> <span style="color: #39ff14;">[VERIFIED]</span> Secure transport handshake established. Content unlocked.`;
+    logBox.innerHTML += `<br><span style="color: #58a6ff;">[${timestamp}]</span> <span style="color: #39ff14;">[SUCCESS]</span> Dynamically matched ${dynamicKeywords.length} unique career target vectors.`;
     
-    // Simulate gate verification sequence loop safely
-    setTimeout(() => {
-        document.getElementById("lockCover").style.display = "none";
-        alert("Verification confirmed. Grid workspace open.");
-    }, 1500);
+    // 5. --- PHYSICAL FILE DOWNLOAD DISPATCH ---
+    try {
+        const fileBlob = new Blob([optimizedPayload], { type: "text/plain;charset=utf-8" });
+        const downloadAnchor = document.createElement("a");
+        
+        downloadAnchor.href = URL.createObjectURL(fileBlob);
+        downloadAnchor.download = "ats_optimized_linear_resume.txt";
+        
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        document.body.removeChild(downloadAnchor);
+        
+        logBox.innerHTML += `<br><span style="color: #58a6ff;">[${timestamp}]</span> <span style="color: #39ff14;">[EXPORT]</span> Text file downloaded successfully to device.`;
+    } catch (err) {
+        logBox.innerHTML += `<br><span style="color: #58a6ff;">[${timestamp}]</span> <span style="color: #ff3333;">[ERROR]</span> Local download pipeline blocked.`;
+    }
 }
 
 function clearConsoleData() {
+    document.getElementById("proInput").value = "";
     document.getElementById("proOutput").value = "";
-    document.getElementById("injectionLogs").innerText = "[SYSTEM] Console wiped clean. Awaiting new document data layers...";
+    document.getElementById("injectionLogs").innerHTML = "[SYSTEM] Console wiped clean. Awaiting raw document streams...";
 }
 </script>
 

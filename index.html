@@ -136,7 +136,7 @@
 
 <script>
 function executeUniversalAudit() {
-    // 1. Establish Secure Front-End Layout Sinks
+    // 1. Establish Secure UI Element Sinks
     const resumeText = document.getElementById("resumeContent")?.value;
     const targetJob = document.getElementById("jobTitleInput")?.value || "";
     
@@ -147,88 +147,65 @@ function executeUniversalAudit() {
     const metricBadge = document.querySelector(".status-badge") || document.getElementById("malfunctionBadge");
 
     if (!resumeText || !resumeText.trim()) {
-        alert("Input stream empty. Please paste your resume text layer.");
+        alert("Input stream empty. Paste your resume text layer.");
         return;
     }
 
     consoleResult.style.display = "block";
 
-    // Split text cleanly into individual lines to scan macro architecture
-    const textLines = resumeText.split(/\r?\n/);
-    let suspiciousLineCount = 0;
-    let gridCharacterCount = 0;
+    // 2. REAL LAYOUT LOGIC REASONING (Ignores basic bullet points and list spacing)
+    const textLines = resumeText.split(/\r?\n/).filter(line => line.trim().length > 0);
+    let matrixTableLines = 0;
     
-    // 2. TRUE STRUCTURAL REASONING LOOP (Scanning for actual design grid abuse)
     textLines.forEach(line => {
-        let trimmedLine = line.trim();
-        if (trimmedLine.length === 0) return; // Skip empty lines completely
+        // Only flag line if it contains literal hard-grid boundaries or multiple pipe dividers
+        const hasGridDividers = /[║│█─┼╚═╗🗂]/.test(line);
+        const pipeDividersCount = (line.match(/\|/g) || []).length;
         
-        // Check for aggressive column formatting stops (4 or more continuous spaces, or explicit tabs)
-        const hasColumnStops = /\t| {4,}/.test(line);
-        // Check for literal tables or complex grid characters
-        const hasGridDividers = /[║│█]|┼|┼|─/.test(line);
-        // Track pipe count to make sure single dividers don’t break the scan
-        const pipeMatches = (line.match(/\|/g) || []).length;
-
-        if (hasColumnStops || hasGridDividers || pipeMatches > 1) {
-            suspiciousLineCount++;
+        if (hasGridDividers || pipeDividersCount > 1) {
+            matrixTableLines++;
         }
     });
 
-    // Calculate structural anomaly density percentage across the whole corpus
-    const structuralAnomalyDensity = textLines.length > 0 ? (suspiciousLineCount / textLines.length) * 100 : 0;
-    
-    // Only flag as a malfunction if more than 15% of the file behaves like a multi-column matrix table
-    const layoutIsCorrupted = structuralAnomalyDensity >= 15;
+    const trueGridDensity = textLines.length > 0 ? Math.round((matrixTableLines / textLines.length) * 100) : 0;
+    const layoutIsCorrupted = trueGridDensity >= 20; // Only fails if real structural tables cross 20% threshold
 
-    // 3. Dynamic Keyword Frequency Extraction from User’s Target Title
+    // 3. Dynamic Stop-Words Filter & Text Tokenizer
     const cleanResume = resumeText.toLowerCase();
-    const cleanJob = targetJob.toLowerCase().trim();
+    const stopWords = new Set(["and", "the", "for", "with", "this", "that", "from", "your", "management", "skills"]);
     
-    let defaultKeywords = ["systems", "management", "operations", "execution", "data"];
-    if (cleanJob.includes("engineer") || cleanJob.includes("developer") || cleanJob.includes("code")) {
-        defaultKeywords = ["git", "api", "javascript", "python", "docker", "aws", "database"];
-    } else if (cleanJob.includes("associate") || cleanJob.includes("store") || cleanJob.includes("retail")) {
-        defaultKeywords = ["cashiering", "inventory", "sales", "merchandising", "customer service"];
+    const jobTokens = targetJob.toLowerCase().replace(/[^a-zA-Z0-9\s]/g, " ").split(/\s+/);
+    let dynamicKeywords = jobTokens.filter(word => word.length > 2 && !stopWords.has(word));
+
+    if (dynamicKeywords.length === 0) {
+        dynamicKeywords = ["execution", "operations", "data", "systems"];
     }
 
     let missingSkills = [];
-    defaultKeywords.forEach(kw => {
+    dynamicKeywords.forEach(kw => {
         if (!cleanResume.includes(kw)) missingSkills.push(kw);
     });
 
-    // 4. --- RENDER REAL-TIME INTEGRITY VERDICT (ZERO HARDCODED PLUGINS) ---
-    let verdictHTML = "";
-    
+    // 4. --- RENDER AUTHENTIC UI VERDICTS (FIXED SYNTAX FRAGMENTS) ---
     if (layoutIsCorrupted) {
-        if (metricBadge) {
-            metricBadge.innerText = "MALFUNCTION";
-            metricBadge.style.background = "#ff3333";
-            metricBadge.style.color = "#ffffff";
-        }
-        
-        verdictHTML = `<h3 style=”color: #ff3333; margin-top: 0; font-family: sans-serif;”>✕ Layout Geometry Deficit Detected:</h3>`;
-        verdictHTML += `<p style=”color: #c9d1d9; font-family: sans-serif; line-height: 1.6;”>Our parsing matrix identified repeated parallel column rows or complex table framework stops across your text stream layer (${Math.round(structuralAnomalyDensity)}% structural grid density).</p>`;
-        verdictHTML += `<p style=”color: #8b949e; font-size: 13px; font-family: monospace;”>[DIAGNOSTIC]: Multi-column layouts break logical tracking arrays when scanned by standard parsing nodes.</p>`;
+        if (metricBadge) { metricBadge.innerText = "MALFUNCTION"; metricBadge.style.background = "#ff3333"; metricBadge.style.color = "#fff"; }
+        feedbackBox.innerHTML = `<h3 style="color: #ff3333; margin-top:0;">✕ Layout Table Grid Detected:</h3>
+        <p style="color: #c9d1d9; line-height:1.6;">Our parser identified complex tabular data boundaries (${trueGridDensity}% density). Multi-column tables hide text strings from indexing nodes.</p>`;
     } else {
-        if (metricBadge) {
-            metricBadge.innerText = "COMPLIANT";
-            metricBadge.style.background = "#39ff14";
-            metricBadge.style.color = "#000000";
-        }
-        
-        verdictHTML = `<h3 style=”color: #39ff14; margin-top: 0; font-family: sans-serif;”>✓ Linear Geometry Verified:</h3>`;
-        verdictHTML += `<p style=”color: #c9d1d9; font-family: sans-serif; line-height: 1.6;”>Structure validation success! Your text stream parses cleanly down a single vertical vector block. Zero multi-column constraints or complex design table frames were discovered.</p>`;
+        if (metricBadge) { metricBadge.innerText = "COMPLIANT"; metricBadge.style.background = "#39ff14"; metricBadge.style.color = "#000"; }
+        feedbackBox.innerHTML = `<h3 style="color: #39ff14; margin-top:0;">✓ Linear Layout Verified:</h3>
+        <p style="color: #c9d1d9; line-height:1.6;">Structure validation success! Your text stream parses down a clean vertical vector sequence. Zero complex side-by-side columns found.</p>
+        <div style="margin-top: 15px;">
+            <a href="pro-optimizer.html" style="display: inline-block; padding: 10px 20px; background: #ffaa00; color: #000; text-decoration: none; font-weight: bold; border-radius: 4px; font-family: sans-serif;">PROCEED TO PRO-OPTIMIZER HUB FOR EXPORT ➡️</a>
+        </div>`;
     }
 
-    feedbackBox.innerHTML = verdictHTML;
-
-    // 5. Populate Dynamic Keyword Deficits
+    // 5. Fixed Keyword Tag Output (Wiped away the broken '开口' text string)
     if (missingSkills.length > 0) {
         keywordDeficitArea.style.display = "block";
         missingKeywordsList.innerHTML = "";
         missingSkills.forEach(skill => {
-            missingKeywordsList.innerHTML += `<span class=”keyword-tag” style=”display:inline-block; margin:3px; padding:4px 8px; background:rgba(248,81,73,0.15); border:1px solid #f85149; color:#f85149; border-radius:4px; font-size:11px; font-family:monospace;”>开口 ${skill.toUpperCase()}</span> `;
+            missingKeywordsList.innerHTML += `<span class="keyword-tag" style="display:inline-block; margin:3px; padding:4px 8px; background:rgba(248,81,73,0.15); border:1px solid #f85149; color:#f85149; border-radius:4px; font-size:11px; font-family:monospace;">✗ ${skill.toUpperCase()}</span> `;
         });
     } else {
         keywordDeficitArea.style.display = "none";
